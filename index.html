@@ -527,22 +527,28 @@
     margin: 10px auto; /* Pusatkan dan kurangi margin */
 }
 
-        .control-btn {
-            background: var(--button-primary);
-            border: 2px solid var(--border-color);
-            padding: 1px;
-            border-radius: 12px;
-            color: var(--white);
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 8px var(--shadow-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            aspect-ratio: 1 / 1;
-            font-family: 'Fredoka One', cursive;
-        }
+.control-btn {
+    background-color: var(--game-button-bg);
+    color: var(--black);
+    border: 2px solid var(--game-button-border);
+    border-radius: 10px; /* Sudut membulat */
+    padding: 8px 10px; /* Sesuaikan padding */
+    font-size: 1.2em; /* Sedikit perkecil ukuran font */
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    display: flex; /* Gunakan flex untuk pusatkan ikon/teks di dalam tombol */
+    justify-content: center;
+    align-items: center;
+    min-height: 40px; /* Pastikan tinggi minimum */
+}
+    .control-btn.drop {
+        font-size: 1.4em;
+        padding: 5px 10px;
+    }
+}
+
         .control-btn:hover {
             background: var(--button-secondary);
             transform: translateY(-3px);
@@ -631,12 +637,20 @@
             .modal-content h2 { font-size: 1.5em; }
             .modal-content input, .modal-content select { font-size: 0.85em; padding: 8px 12px; }
             .modal-content button { font-size: 0.9em; padding: 10px; }
-            .controls { gap: 8px; max-width: 250px; }
-            .control-btn { padding: 3px 10px; font-size: 1.2em; border-radius: 10px; }
-        }
+    .controls {
+        gap: 3px;
+        width: 100%;
+        max-width: 250px;
+        margin: 5px auto;
+    }
+    .control-btn {
+        padding: 6px 10px;
+        font-size: 1.0em;
+        min-height: 30px;
+    }
    #startButton {
     display: block;
-    width: 80%;
+    width: auto%;
     padding: 10px 10px; /* Kurangi padding */
     margin: 15px auto;
     background-color: var(--cta-button-bg);
@@ -1816,7 +1830,7 @@
         }
 
         const startButton = document.createElement('button');
-        startButton.textContent = `Mulai Game (Bayar Rp${GAME_START_COST.toLocaleString('id-ID')})`;
+        startButton.textContent = `Mulai Game`;
         startButton.id = 'startButton';
         startButton.classList.add('active'); 
         startButton.onclick = initiateGameStart;
