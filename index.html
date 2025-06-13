@@ -517,14 +517,16 @@
         }
 
         .controls {
-            display: grid;
-            grid-template-areas:
-                "left rotate right"
-                ". drop .";
-            gap: 10px;
-            width: 100%;
-            margin-bottom: 5px;
-        }
+    display: grid;
+    grid-template-areas:
+        "left rotate right"
+        ". drop .";
+    gap: 5px; /* Kurangi gap antara tombol */
+    width: 90%; /* Sesuaikan lebar relatif */
+    max-width: 300px; /* Batasi lebar maksimum */
+    margin: 10px auto; /* Pusatkan dan kurangi margin */
+}
+
         .control-btn {
             background: var(--button-primary);
             border: 2px solid var(--border-color);
@@ -632,6 +634,34 @@
             .controls { gap: 8px; max-width: 250px; }
             .control-btn { padding: 10px; font-size: 1.2em; border-radius: 10px; }
         }
+        #startButton {
+    display: block;
+    width: 80%;
+    padding: 10px 10px; /* Kurangi padding */
+    margin: 15px auto;
+    background-color: var(--cta-button-bg);
+    color: var(--white);
+    font-size: 1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-align: center;
+    position: absolute; /* Penting: agar bisa diposisikan di atas kanvas */
+    top: 50%; /* Posisikan di tengah vertikal */
+    left: 50%; /* Posisikan di tengah horizontal */
+    transform: translate(-50%, -50%); /* Geser agar benar-benar di tengah */
+    z-index: 10; /* Pastikan di atas canvas */
+    display: none; /* Awalnya sembunyikan, akan ditampilkan dengan JS */
+}
+
+/* Pastikan saat aktif terlihat */
+#startButton.active {
+    display: block;
+}
+
     </style>
 </head>
 <body>
