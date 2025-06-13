@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Game Zone - Slot77</title>
+    <link rel="icon" href="https://vqmfachxnjyxwuavpgds.supabase.co/storage/v1/object/public/zaus/SLOT77.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Global & Reset */
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Open+Sans:wght@400;700&display=swap');
+
+        :root {
+            --cartoon-blue: #64B5F6; /* Light Blue */
+            --cartoon-green: #81C784; /* Light Green */
+            --cartoon-yellow: #FFD54F; /* Light Yellow */
+            --cartoon-pink: #F48FB1; /* Light Pink */
+            --cartoon-purple: #BA68C8; /* Light Purple */
+            --dark-gray: #333;
+            --medium-gray: #555;
+            --light-gray: #eee;
+            --white: #fff;
+            --text-dark: #333;
+            --text-light: #f5f5f5;
+            --bg-gradient-start: #BBDEFB; /* Lighter Blue */
+            --bg-gradient-end: #E0F2F7; /* Even Lighter Blue */
+            --modal-bg: #FFE0B2; /* Light Orange/Cream */
+            --button-primary: #FFB74D; /* Orange */
+            --button-secondary: #AED581; /* Green */
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --border-color: #795548; /* Brownish */
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Open Sans', sans-serif;
+            background-image: url('https://vqmfachxnjyxwuavpgds.supabase.co/storage/v1/object/public/zaus//images%20(1).jpeg');
+            background-size: cover;
+            color: var(--text-dark);
+            overflow: hidden; /* Prevent scrolling on main body */
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Body Border Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            right: 5px;
+            bottom: 0px;
+            border: 0px solid var(--border-color);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            z-index: 0;
+        }
+
+        /* Main Game Container */
+        .game-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0px;
+            overflow-y: auto;
+        }
+
+        /* Header & Main Buttons (Login/Register removed) */
+        .header-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 2px;
+            position: relative;
+            z-index: 100;
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            text-align: center;
+            font-size: 50px;
+            color: var(--cartoon-purple);
+            text-shadow: 2px 2px 0px var(--cartoon-pink), 4px 4px 0px rgba(0,0,0,0.1);
+            margin: 0 0 0px 0;
+            line-height: 1;
+            padding-bottom: 5px;
+            letter-spacing: 2px;
+        }
+        marquee {
+            width: 100%;
+            padding: 0px 0;
+            background-color: rgba(255, 255, 255, 0.5);
+            color: red;
+            font-size: 1em;
+            text-align: center;
+            border-top: 2px dashed var(--cartoon-yellow);
+            border-bottom: 2px dashed var(--cartoon-yellow);
+            box-shadow: 0 2px 5px var(--shadow-color);
+            margin-bottom: 0px;
+            border-radius: 8px;
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: #222;
+            border: 3px solid gold;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+        .hamburger-menu .bar {
+            width: 30px;
+            height: 4px;
+            background-color: var(--white);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .hamburger-menu.open {
+            background: var(--cartoon-pink);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        .hamburger-menu.open .bar:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .hamburger-menu.open .bar:nth-child(2) { opacity: 0; }
+        .hamburger-menu.open .bar:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .sidebar-content {
+            background: var(--modal-bg);
+            border: 3px solid var(--border-color);
+            box-shadow: 0 8px 20px var(--shadow-color);
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 90%;
+            max-width: 500px;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .sidebar-overlay.active .sidebar-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .sidebar-content h2 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--cartoon-purple);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 0px var(--cartoon-pink);
+            font-size: 2.2em;
+        }
+        .sidebar-nav-btn {
+            display: block;
+            width: 100%;
+            background: var(--button-primary);
+            border: 2px solid var(--border-color);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 30px;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            text-decoration: none;
+        }
+        .sidebar-nav-btn:hover {
+            background: var(--button-secondary);
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        .sidebar-nav-btn i {
+            margin-right: 10px;
+            color: var(--white);
+        }
+
+        /* Modal Styles (Login/Register, Deposit, Withdraw, History, Notification) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: modalFadeIn 0.3s ease-out;
+            backdrop-filter: blur(5px);
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--modal-bg);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 20px var(--shadow-color);
+            color: var(--text-dark);
+            transform: scale(0.9);
+            animation: modalPopUp 0.4s ease-out forwards;
+            border: 3px solid var(--border-color);
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            margin: auto;
+        }
+        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modalPopUp { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .modal-content h2 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--cartoon-purple);
+            text-shadow: 1px 1px 0px var(--cartoon-pink);
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+        .modal-content p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .modal-content label {
+            text-align: left;
+            margin-bottom: -10px;
+            font-weight: 700;
+            color: var(--medium-gray);
+            letter-spacing: 0.5px;
+            font-size: 1em;
+        }
+        .modal-content input,
+        .modal-content select {
+            padding: 12px 18px;
+            border-radius: 25px;
+            border: 2px solid var(--cartoon-blue);
+            outline: none;
+            font-size: 1em;
+            background: var(--white);
+            color: var(--text-dark);
+            transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+            width: 100%;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .modal-content input:focus,
+        .modal-content select:focus {
+            border-color: var(--cartoon-green);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 0 8px rgba(129, 199, 132, 0.5);
+        }
+        .modal-content input::placeholder {
+            color: #aaa;
+            opacity: 0.8;
+        }
+
+        .modal-content button {
+            background: var(--button-primary);
+            border: 2px solid var(--border-color);
+            padding: 15px;
+            border-radius: 30px;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            width: 100%;
+            margin-top: 15px;
+        }
+        .modal-content button:hover {
+            background: var(--button-secondary);
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        .modal-content .secondary {
+            background: var(--cartoon-blue);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+        }
+        .modal-content .secondary:hover {
+            background: var(--cartoon-pink);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .modal-content .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .modal-content .modal-buttons button {
+            flex: 1;
+            margin-top: 0;
+        }
+        .modal-content .link-text {
+            color: var(--cartoon-blue);
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* History Table */
+        #history-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 5px var(--shadow-color);
+            border-radius: 8px;
+            overflow: hidden; /* For rounded corners */
+        }
+        #history-content th, #history-content td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.9em;
+            color: var(--text-dark);
+        }
+        #history-content th {
+            background: var(--cartoon-blue);
+            color: var(--white);
+            font-family: 'Fredoka One', cursive;
+            font-size: 1em;
+        }
+        .status-pending { color: #FFA500; font-weight: bold; } /* Orange */
+        .status-approved { color: var(--cartoon-green); font-weight: bold; } /* Green */
+        .status-rejected { color: #FF4D4D; font-weight: bold; } /* Red */
+        .empty { text-align: center; font-style: italic; color: #888; }
+
+        /* Game Specific Styles */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 3px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border: 3px solid var(--border-color);
+            box-shadow: 0 8px 20px var(--shadow-color);
+            border-radius: 10px;
+            padding: 2px;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            flex-grow: 1;
+            overflow: hidden; /* Ensure rounded corners */
+        }
+
+        .player-banner {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 2px solid var(--border-color);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 4px 8px var(--shadow-color);
+            border-radius: 15px;
+            padding: 10px 10px;
+            margin-bottom: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two columns */
+            gap: 0px 1px; /* Adjust gap */
+            font-size: 0.9em;
+            color: var(--text-dark);
+        }
+        .player-banner p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        .player-banner p strong {
+            font-weight: 700;
+            color: var(--medium-gray);
+            margin-right: 5px;
+        }
+        .player-banner span {
+            font-weight: bold;
+            color: var(--dark-gray);
+            border-radius: 5px;
+        }
+        .player-name, #balance {
+            color: var(--dark-gray);
+            text-shadow: 0px 0px 0px var(--cartoon-pink);
+            font-size: 1.1em;
+            background-color: ;
+            width: 100px;
+        }
+        .player-status {
+            color: var(--cartoon-pink);
+            font-weight: bold;
+        }
+        .player-status.login { color: var(--cartoon-green); }
+        .player-status.error { color: #FF4D4D; }
+        .info-item {
+            color: var(--cartoon-blue);
+        }
+        /* Tambahkan di bawah .player-banner atau di bagian CSS utama Anda */
+.player-banner p {
+    /* Properti yang sudah ada: */
+    margin: 0;
+    display: flex;
+    align-items: center;
+    line-height: 1.3;
+    /* Tambahan untuk background dan padding */
+    padding: 5px 8px; /* Tambahkan padding di dalam setiap item */
+    border-radius: 8px; /* Sudut membulat */
+    margin-bottom: 5px; /* Jarak antar item jika display grid berubah */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* Sedikit bayangan */
+    text-align: left; /* Pastikan teks rata kiri dalam item */
+    font-size: 0.9em; /* Sesuaikan ukuran font */
+    min-width: 0; /* Penting untuk flex item dalam grid */
+}
+
+.player-banner p:nth-child(1) { /* Pemain */
+    background-color: var(--cartoon-blue); /* Contoh warna */
+    color: var(--white);
+}
+
+.player-banner p:nth-child(2) { /* Status */
+    background-color: var(--cartoon-green); /* Contoh warna */
+    color: var(--white);
+}
+
+.player-banner p:nth-child(3) { /* Saldo */
+    background-color: var(--cartoon-pink); /* Contoh warna */
+    color: var(--white);
+}
+
+.player-banner p:nth-child(4) { /* Kemenangan Sesi */
+    background-color: var(--cartoon-yellow); /* Contoh warna */
+    color: var(--dark-gray); /* Sesuaikan warna teks */
+}
+
+.player-banner p:nth-child(5) { /* Total Kekalahan */
+    background-color: var(--cartoon-purple); /* Contoh warna */
+    color: var(--white);
+}
+
+/* Sesuaikan juga warna teks di dalam item */
+.player-banner p strong {
+    color: inherit; /* Warisi warna dari parent p */
+    margin-right: 5px;
+}
+.player-banner p span {
+    color: inherit; /* Warisi warna dari parent p */
+    font-weight: bold;
+}
+
+/* Override warna spesifik jika ada */
+.player-status.login { color: var(--white); } /* Pastikan tetap putih di background hijau */
+.player-status.error { color: var(--white); } /* Pastikan tetap putih di background merah jika ada */
+.player-name, #balance {
+    color: var(--white); /* Sesuaikan agar tetap terlihat di background warna */
+    text-shadow: none; /* Hapus text-shadow jika mengganggu */
+}
+
+       
+        #gameCanvas {
+            background: #E8F5E9; /* Very light green */
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 4px 8px var(--shadow-color);
+            margin-bottom: 5px;
+            display: block;
+            border-radius: 5px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-areas:
+                "left rotate right"
+                ". drop .";
+            gap: 5px;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .control-btn {
+            background: var(--button-primary);
+            border: 2px solid var(--border-color);
+            padding: 8px;
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            aspect-ratio: 1 / 1;
+            font-family: 'Fredoka One', cursive;
+        }
+        .control-btn:hover {
+            background: var(--button-secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        #moveLeftBtn { grid-area: left; }
+        #rotateBtn { grid-area: rotate; }
+        #moveRightBtn { grid-area: right; }
+        #softDropBtn { grid-area: drop; width: 100%; border-radius: 30px; }
+
+        .message-area {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            min-height: 40px;
+            color: var(--text-dark);
+            background: var(--light-gray);
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .message-area.info { background: #E3F2FD; color: #2196F3; } /* Light Blue */
+        .message-area.success { background: #E8F5E9; color: #4CAF50; } /* Light Green */
+        .message-area.error { background: #FFEBEE; color: #F44336; } /* Light Red */
+
+        .balance-animation.animate-gain { animation: gain-anim 0.5s ease-out; }
+        .balance-animation.animate-loss { animation: loss-anim 0.5s ease-out; }
+        @keyframes gain-anim { 0% { color: var(--dark-gray); transform: scale(1); } 50% { color: var(--cartoon-green); transform: scale(1.1); } 100% { color: var(--cartoon-purple); transform: scale(1); } }
+        @keyframes loss-anim { 0% { color: var(--dark-gray); transform: scale(1); } 50% { color: #FF4D4D; transform: scale(0.9); } 100% { color: var(--cartoon-purple); transform: scale(1); } }
+
+        /* WhatsApp Button */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background-color: #25D366;
+            border-radius: 50%;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 128, 0, 0.4);
+            transition: transform 0.2s ease;
+            border: 2px solid var(--border-color);
+        }
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+        }
+        .whatsapp-button img {
+            width: 40px;
+            height: 40px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 { font-size: 40px; letter-spacing: 1px; }
+            .game-container { padding: 10px; }
+            .player-banner { 
+              gap: 5px; } /* Stack player info on smaller screens */
+            .hamburger-menu { top: 15px; right: 15px; padding: 8px; }
+            .hamburger-menu .bar { width: 25px; height: 3px; }
+            .sidebar-content { padding: 30px 20px; }
+            .sidebar-content h2 { font-size: 1.8em; }
+            .sidebar-nav-btn { font-size: 1em; padding: 12px 15px; }
+            .modal-content { padding: 20px; max-width: 350px; }
+            .modal-content h2 { font-size: 1.8em; }
+            .modal-content input, .modal-content select { font-size: 0.9em; padding: 10px 15px; }
+            .modal-content button { font-size: 1em; padding: 12px; }
+            .whatsapp-button { bottom: 15px; left: 15px; padding: 8px; }
+            .whatsapp-button img { width: 35px; height: 35px; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 35px; letter-spacing: 0px; }
+            .game-wrapper { padding: 5px; }
+            .player-banner { font-size: 0.5em; padding: 5px 1px; }
+            .hamburger-menu { top: 10px; right: 10px; padding: 6px; }
+            .hamburger-menu .bar { width: 20px; height: 2px; }
+            .sidebar-content { padding: 20px 15px; }
+            .sidebar-content h2 { font-size: 1.5em; }
+            .sidebar-nav-btn { font-size: 0.9em; padding: 10px 12px; }
+            .modal-content { padding: 15px; max-width: 300px; }
+            .modal-content h2 { font-size: 1.5em; }
+            .modal-content input, .modal-content select { font-size: 0.85em; padding: 8px 12px; }
+            .modal-content button { font-size: 0.9em; padding: 10px; }
+            .controls { gap: 8px; max-width: 250px; }
+            .control-btn { padding: 10px; font-size: 1.2em; border-radius: 10px; }
+        }
+    </style>
+</head>
+<body>
+<audio id="backgroundMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" preload="auto" loop></audio>
+    <audio id="clickSound" src="https://vqmfachxnjyxwuavpgds.supabase.co/storage/v1/object/public/music//mixkit-game-ball-tap-2073.mp3" preload="auto"></audio>
+    <audio id="lineClearSound" src="https://vqmfachxnjyxwuavpgds.supabase.co/storage/v1/object/public/music//mixkit-mechanical-crate-pick-up-3154%20(1).mp3" preload="auto"></audio>
+    <audio id="blockLandSound" src="https://vqmfachxnjyxwuavpgds.supabase.co/storage/v1/object/public/music//mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+
+    <button class="hamburger-menu" id="hamburgerBtn">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
+
+    <div class="sidebar-overlay" id="sidebarOverlay">
+        <div class="sidebar-content">
+            <h2 id="sidebarTitle">Menu Utama</h2>
+            <div id="sidebar-auth-toggle">
+                <button class="sidebar-nav-btn" id="sidebarLoginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+                <button class="sidebar-nav-btn" id="sidebarRegisterBtn"><i class="fas fa-user-plus"></i> Daftar</button>
+            </div>
+            <button class="sidebar-nav-btn" id="sidebarProfileBtn" style="display:none;"><i class="fas fa-user-circle"></i> Profil</button>
+            <button class="sidebar-nav-btn" id="sidebarDepositBtn"><i class="fas fa-wallet"></i> Deposit</button>
+            <button class="sidebar-nav-btn" id="sidebarWithdrawBtn"><i class="fas fa-exchange-alt"></i> Penarikan</button>
+            <button class="sidebar-nav-btn" id="sidebarHistoryBtn"><i class="fas fa-history"></i> Riwayat Transaksi</button>
+            <a href="https://wa.me/628892l37079" target="_blank" class="sidebar-nav-btn"><i class="fab fa-whatsapp"></i> Kontak Admin</a>
+            <button class="sidebar-nav-btn" id="sidebarEventBtn"><i class="fas fa-calendar-alt"></i> Event</button>
+            <button class="sidebar-nav-btn" id="sidebarLogoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+
+    <div class="game-wrapper">
+        <div class="header-content">
+            <h1>Game Zone</h1>
+            <marquee><strong>Game susun balok di rancang khusus tanpa manipulasi sistem.Kemenangan murni hasil strategi bermain! {•minimum deposit maximum withdraw•}.© 2025 GAME ZONE dilindungi HAK CIPTA.</strong></marquee>
+        </div>
+
+        <div class="game-container">
+            <div class="player-banner">
+                <p><strong>user :</strong> <span id="playerName">Memuat...</span></p>
+                <p><strong>saldo:</strong> Rp.<span id="balance">Memuat.</span></p>
+                <p><strong>Kemenangan :</strong> Rp.<span id="totalKemenanganSesi">0</span></p>
+                <p><strong>Kekalahan :</strong> Rp.<span id="totalKekalahanDisplay">0</span></p>
+            </div>
+
+            <canvas id="gameCanvas"></canvas>
+            <div class="controls">
+                <button id="moveLeftBtn" class="control-btn">←</button>
+                <button id="rotateBtn" class="control-btn">↻</button>
+                <button id="moveRightBtn" class="control-btn">→</button>
+                <button id="softDropBtn" class="control-btn">↓</button>
+            </div>
+            <div id="message-area" class="message-area"></div>
+        </div>
+    </div>
+
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="authModalTitle">Login</h2>
+            <form id="loginForm">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="Masukkan email Anda" required />
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" placeholder="Masukkan password" required />
+                <button type="submit">Login</button>
+                <p class="small-text"><span class="link-text" onclick="showCustomAlert('Lupa Password?', 'Fitur reset password belum tersedia. Silakan hubungi admin jika Anda mengalami masalah.')">Lupa Password?</span></p>
+                <button type="button" class="secondary" onclick="toggleAuthMode()">Daftar</button>
+                <button type="button" class="secondary" onclick="closeModal('authModal')">Batal</button>
+            </form>
+
+            <form id="registerForm" style="display:none;">
+                <label for="reg-username">Username</label>
+                <input type="text" id="reg-username" placeholder="Buat username" required />
+                <label for="reg-email">Email</label>
+                <input type="email" id="reg-email" placeholder="Masukkan email Anda" required />
+                <label for="reg-password">Password</label>
+                <input type="password" id="reg-password" placeholder="Buat password (min. 6 karakter)" required />
+                <label for="reg-password2">Konfirmasi Password</label>
+                <input type="password" id="reg-password2" placeholder="Konfirmasi password" required />
+                <button type="submit">Daftar Akun</button>
+                <button type="button" class="secondary" onclick="toggleAuthMode()">Login</button>
+                <button type="button" class="secondary" onclick="closeModal('authModal')">Batal</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Profil Pengguna</h2>
+            <p><strong>Username:</strong> <span id="profileUsername"></span></p>
+            <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+            <p><strong>Saldo:</strong> Rp.<span id="profileSaldo"></span></p>
+            <p><strong>Kemenangan Tertinggi:</strong> Rp.<span id="profileHighestWin"></span></p>
+            <button type="button" onclick="closeModal('profileModal')">Tutup</button>
+        </div>
+    </div>
+
+    <div id="depositModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>DEPOSIT VIA DANA</h2>
+            <label for="dep-nama">Nama Penerima:</label>
+            <input type="text" id="dep-nama" placeholder="Nama" readonly />
+            <label for="dep-email">Email Pemain:</label>
+            <input type="email" id="dep-email" placeholder="Email" readonly />
+            <div class="input-group-with-copy">
+                <label for="dep-nomor">Nomor Tujuan:</label>
+                <input type="text" id="dep-nomor" placeholder="Nomor" readonly />
+                <button class="btn-copy" data-target="dep-nomor">
+                    <i class="fas fa-copy"></i> Salin nomor
+                </button>
+            </div>
+            <div style="text-align:center; margin: 25px 0;">
+                <button class="secondary" id="btn-qris">Deposit via QRIS</button>
+                <button class="secondary" id="btn-kembali-ewallet" style="display:none;">Kembali eWallet</button>
+            </div>
+            <div id="form-qris" style="display:none;">
+                <img src="" alt="QRIS" id="gambar-qris" style="max-width:100%; height:auto; margin-top:15px;" />
+            </div>
+            <label for="dep-jumlah">Jumlah (Rp):</label>
+            <input type="number" id="dep-jumlah" placeholder="Contoh: 50000" />
+            <button class="primary" id="dep-submit">Kirim</button>
+            <button type="button" class="secondary" onclick="closeModal('depositModal')">Batal</button>
+        </div>
+    </div>
+
+    <div id="withdrawModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>PENARIKAN DANA</h2>
+            <label for="with-nama">Nama Penerima:</label>
+            <input type="text" id="with-nama" placeholder="Nama Lengkap" />
+            <label for="with-email">Email:</label>
+            <input type="email" id="with-email" placeholder="Email" readonly />
+            <label for="with-metode">Metode Penarikan:</label>
+            <select id="with-metode">
+                <option value="">Pilih e-Wallet/Bank</option>
+                <option value="DANA">DANA</option>
+                <option value="OVO">OVO</option>
+                <option value="GoPay">GoPay</option>
+                <option value="Bank">Transfer Bank</option>
+            </select>
+            <label for="with-nomor">No. Rekening/e-Wallet:</label>
+            <input type="text" id="with-nomor" placeholder="Nomor Rekening/e-Wallet" />
+            <label for="with-bank" id="label-bank" style="display:none;">Nama Bank:</label>
+            <input type="text" id="with-bank" placeholder="Contoh: BCA / Mandiri" style="display:none;" />
+            <label for="with-jumlah">Jumlah (Rp):</label>
+            <input type="number" id="with-jumlah" placeholder="Contoh: 100000" />
+            <button class="primary" id="with-submit">Kirim</button>
+            <button type="button" class="secondary" onclick="closeModal('withdrawModal')">Batal</button>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>RIWAYAT TRANSAKSI</h2>
+            <div id="history-content">
+                <h3>Riwayat Deposit</h3>
+                <table id="riwayat-deposit-modal">
+                    <thead><tr><th>Tanggal</th><th>Jumlah (Rp)</th><th>Status</th></tr></thead>
+                    <tbody><tr><td colspan="3" class="empty">Memuat data...</td></tr></tbody>
+                </table>
+                <h3>Riwayat Penarikan</h3>
+                <table id="riwayat-penarikan-modal">
+                    <thead><tr><th>Tanggal</th><th>Jumlah (Rp)</th><th>Status</th></tr></thead>
+                    <tbody><tr><td colspan="3" class="empty">Memuat data...</td></tr></tbody>
+                </table>
+            </div>
+            <div class="modal-buttons">
+                <button class="secondary" onclick="closeModal('historyModal')">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="customAlertModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="customAlertTitle"></h2>
+            <p id="customAlertMessage"></p>
+            <div class="modal-buttons">
+                <button class="primary" id="customAlertOkBtn">OK</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // Supabase Configuration
+    const SUPABASE_URL = 'https://vqmfachxnjyxwuavpgds.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxbWZhY2h4bmp5eHd1YXZwZ2RzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MDYxNDAsImV4cCI6MjA2Mzk4MjE0MH0.Bzr8mUiEl8MzRWpVQ3_59eFxKk0EWZ3ca-4IEcpGLkk';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentUser = null;
+    let currentBalance = 0;
+    let highestKemenangan = 0;
+    let totalKemenanganSesi = 0;
+    let totalKekalahan = 0;
+    let gameRunning = false;
+
+    // Audio Elements
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const clickSound = document.getElementById('clickSound');
+    const lineClearSound = document.getElementById('lineClearSound');
+    const blockLandSound = document.getElementById('blockLandSound');
+
+    function playSound(audioElement) {
+        if (audioElement) {
+            audioElement.currentTime = 0;
+            audioElement.play().catch(e => console.warn("Audio Playback Warning:", e.message));
+        }
+    }
+
+    function playBackgroundMusic() {
+        if (backgroundMusic && backgroundMusic.paused) {
+            backgroundMusic.play().catch(e => {
+                console.warn("Autoplay of background music blocked. User interaction required. Error:", e.message);
+            });
+        }
+    }
+
+    // --- UI Element References ---
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarTitle = document.getElementById('sidebarTitle');
+    const sidebarAuthToggle = document.getElementById('sidebar-auth-toggle');
+    const sidebarLoginBtn = document.getElementById('sidebarLoginBtn');
+    const sidebarRegisterBtn = document.getElementById('sidebarRegisterBtn');
+    const sidebarProfileBtn = document.getElementById('sidebarProfileBtn');
+    const sidebarDepositBtn = document.getElementById('sidebarDepositBtn');
+    const sidebarWithdrawBtn = document.getElementById('sidebarWithdrawBtn');
+    const sidebarHistoryBtn = document.getElementById('sidebarHistoryBtn');
+    const sidebarEventBtn = document.getElementById('sidebarEventBtn');
+    const sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
+
+    // const mainLoginBtn = document.getElementById('mainLoginBtn'); // Removed
+    // const mainRegisterBtn = document.getElementById('mainRegisterBtn'); // Removed
+
+    const authModal = document.getElementById('authModal');
+    const authModalTitle = document.getElementById('authModalTitle');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const loginEmailInput = document.getElementById('login-email');
+    const loginPasswordInput = document.getElementById('login-password');
+    const regUsernameInput = document.getElementById('reg-username');
+    const regEmailInput = document.getElementById('reg-email');
+    const regPasswordInput = document.getElementById('reg-password');
+    const regPassword2Input = document.getElementById('reg-password2');
+
+    const profileModal = document.getElementById('profileModal');
+    const profileUsernameDisplay = document.getElementById('profileUsername');
+    const profileEmailDisplay = document.getElementById('profileEmail');
+    const profileSaldoDisplay = document.getElementById('profileSaldo');
+    const profileHighestWinDisplay = document.getElementById('profileHighestWin');
+
+    const depositModal = document.getElementById('depositModal');
+    const depNamaInput = document.getElementById('dep-nama');
+    const depEmailInput = document.getElementById('dep-email');
+    const depNomorInput = document.getElementById('dep-nomor');
+    const btnQris = document.getElementById('btn-qris');
+    const btnKembaliEwallet = document.getElementById('btn-kembali-ewallet');
+    const formQris = document.getElementById('form-qris');
+    const gambarQris = document.getElementById('gambar-qris');
+    const depJumlahInput = document.getElementById('dep-jumlah');
+    const depSubmitBtn = document.getElementById('dep-submit');
+
+    const withdrawModal = document.getElementById('withdrawModal');
+    const withNamaInput = document.getElementById('with-nama');
+    const withEmailInput = document.getElementById('with-email');
+    const withMetodeSelect = document.getElementById('with-metode');
+    const withNomorInput = document.getElementById('with-nomor');
+    const withBankInput = document.getElementById('with-bank');
+    const labelBank = document.getElementById('label-bank');
+    const withJumlahInput = document.getElementById('with-jumlah');
+    const withSubmitBtn = document.getElementById('with-submit');
+
+    const historyModal = document.getElementById('historyModal');
+    const riwayatDepositModalTableBody = document.querySelector('#riwayat-deposit-modal tbody');
+    const riwayatPenarikanModalTableBody = document.querySelector('#riwayat-penarikan-modal tbody');
+
+    const customAlertModal = document.getElementById('customAlertModal');
+    const customAlertTitle = document.getElementById('customAlertTitle');
+    const customAlertMessage = document.getElementById('customAlertMessage');
+    const customAlertOkBtn = document.getElementById('customAlertOkBtn');
+
+    // Game specific UI
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const playerNameDisplay = document.getElementById('playerName');
+    const playerStatusDisplay = document.getElementById('playerStatus');
+    const totalKemenanganSesiDisplay = document.getElementById('totalKemenanganSesi');
+    const totalKekalahanDisplay = document.getElementById('totalKekalahanDisplay');
+    const balanceDisplay = document.getElementById('balance');
+    const messageArea = document.getElementById('message-area');
+    const moveLeftBtn = document.getElementById('moveLeftBtn');
+    const rotateBtn = document.getElementById('rotateBtn');
+    const moveRightBtn = document.getElementById('moveRightBtn');
+    const softDropBtn = document.getElementById('softDropBtn');
+
+    // --- General Helper Functions ---
+    function showModal(modalElement) {
+        modalElement.classList.add('active');
+        // Close sidebar if open
+        if (sidebarOverlay.classList.contains('active')) {
+            toggleSidebar();
+        }
+    }
+
+    // Perbaikan: Fungsi closeModal kini menerima ID modal sebagai string
+    function closeModal(modalId) {
+        const modalElement = document.getElementById(modalId);
+        if (modalElement) {
+            modalElement.classList.remove('active');
+            // Reset forms in modals
+            if (modalElement === authModal) {
+                loginForm.reset();
+                registerForm.reset();
+                loginForm.style.display = 'flex';
+                registerForm.style.display = 'none';
+                authModalTitle.textContent = 'Login';
+            } else if (modalElement === depositModal) {
+                depJumlahInput.value = '';
+                formQris.style.display = 'none';
+                btnKembaliEwallet.style.display = 'none';
+            } else if (modalElement === withdrawModal) {
+                withNamaInput.value = '';
+                withMetodeSelect.value = '';
+                withNomorInput.value = '';
+                withJumlahInput.value = '';
+                withBankInput.style.display = 'none';
+                labelBank.style.display = 'none';
+            }
+        }
+    }
+
+    function showCustomAlert(title, message, callback = null) {
+        customAlertTitle.textContent = title;
+        customAlertMessage.textContent = message;
+        customAlertOkBtn.onclick = () => {
+            closeModal('customAlertModal'); // Memanggil closeModal dengan ID modal
+            if (callback) callback();
+        };
+        showModal(customAlertModal);
+    }
+
+    // --- Sidebar & Auth UI Logic ---
+    function toggleSidebar() {
+        sidebarOverlay.classList.toggle('active');
+        hamburgerBtn.classList.toggle('open');
+        // Update sidebar menu based on login status
+        if (currentUser) {
+            sidebarTitle.textContent = currentUser.user_metadata?.username || currentUser.email || 'Profil';
+            sidebarAuthToggle.style.display = 'none';
+            sidebarProfileBtn.style.display = 'block';
+            sidebarLogoutBtn.style.display = 'block';
+        } else {
+            sidebarTitle.textContent = 'Menu Utama';
+            sidebarAuthToggle.style.display = 'block';
+            sidebarProfileBtn.style.display = 'none';
+            sidebarLogoutBtn.style.display = 'none';
+        }
+    }
+
+    function toggleAuthMode() {
+        playSound(clickSound);
+        if (loginForm.style.display === 'none') {
+            loginForm.style.display = 'flex';
+            registerForm.style.display = 'none';
+            authModalTitle.textContent = 'Login';
+        } else {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'flex';
+            authModalTitle.textContent = 'Daftar';
+        }
+    }
+
+    // --- Supabase Authentication Functions ---
+    async function checkUserSession() {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error) {
+            console.error('Supabase Auth Error on session check:', error.message);
+            currentUser = null;
+            updateAuthUI();
+            return;
+        }
+        currentUser = user;
+        updateAuthUI();
+        if (currentUser) {
+            await fetchSaldoAndKemenangan();
+            startGamePrompt(); // If already logged in, prompt to start game
+        } else {
+            balanceDisplay.textContent = 'Login untuk bermain';
+            playerNameDisplay.textContent = 'Guest';
+            playerStatusDisplay.textContent = 'Offline';
+            showModal(authModal); // Show login/register pop-up if not logged in
+        }
+    }
+
+    function updateAuthUI() {
+        // No main auth buttons anymore
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        playSound(clickSound);
+        const email = loginEmailInput.value;
+        const password = loginPasswordInput.value;
+
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (error || !data.user) {
+            const msg = (error.message.includes('Invalid login credentials') || error.message.includes('Invalid Email or Password')) ?
+                'Email atau password yang Anda masukkan salah.' : `Terjadi kesalahan: ${error.message}`;
+            showCustomAlert('Login Gagal!', msg);
+            return;
+        }
+
+        currentUser = data.user;
+        closeModal('authModal'); // Memanggil closeModal dengan ID modal
+        showCustomAlert('Login Berhasil!', `Selamat datang, ${currentUser.user_metadata?.username || currentUser.email}!`);
+        updateAuthUI();
+        await fetchSaldoAndKemenangan();
+        startGamePrompt(); // Prompt to start game after successful login
+    }
+
+    async function handleRegister(e) {
+        e.preventDefault();
+        playSound(clickSound);
+        const username = regUsernameInput.value.trim();
+        const email = regEmailInput.value.trim();
+        const pw1 = regPasswordInput.value;
+        const pw2 = regPassword2Input.value;
+
+        if (!username || !email || !pw1 || !pw2) {
+            showCustomAlert('Pendaftaran Gagal!', 'Lengkapi semua kolom pendaftaran.');
+            return;
+        }
+        if (pw1 !== pw2) {
+            showCustomAlert('Pendaftaran Gagal!', 'Kata sandi tidak cocok.');
+            return;
+        }
+        if (pw1.length < 6) {
+            showCustomAlert('Pendaftaran Gagal!', 'Password minimal harus 6 karakter.');
+            return;
+        }
+
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+            email,
+            password: pw1,
+            options: { data: { username: username } }
+        });
+
+        if (signUpError) {
+            const msg = signUpError.message.includes('already registered') ?
+                'Email ini sudah terdaftar. Silakan login atau gunakan email lain.' : `Terjadi kesalahan: ${signUpError.message}`;
+            showCustomAlert('Pendaftaran Gagal!', msg);
+            return;
+        }
+
+        if (!signUpData.user) {
+            console.error('Sign up succeeded but no user object returned.');
+            showCustomAlert('Pendaftaran Gagal!', 'Terjadi kesalahan internal setelah pendaftaran akun. Silakan coba lagi.');
+            return;
+        }
+
+        const { error: upsertError } = await supabase.from('users_data').upsert(
+            { user_id: signUpData.user.id, username: username, email: email, saldo: 0, highest_kemenangan: 0, peran: 'Players_Guest' },
+            { onConflict: 'user_id' }
+        );
+
+        if (upsertError) {
+            console.error('Error upserting user data:', upsertError.message);
+            showCustomAlert('Pendaftaran Berhasil!', `Namun, gagal menyimpan data tambahan. Silakan coba login. (${upsertError.message})`);
+            loginForm.style.display = 'flex'; // Switch to login form
+            registerForm.style.display = 'none';
+            authModalTitle.textContent = 'Login';
+            return;
+        }
+
+        showCustomAlert('Pendaftaran Berhasil!', 'Akun Anda berhasil didaftarkan! Silakan login.');
+        loginForm.style.display = 'flex'; // Switch to login form
+        registerForm.style.display = 'none';
+        authModalTitle.textContent = 'Login';
+    }
+
+    async function handleLogout() {
+        playSound(clickSound);
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            showCustomAlert('Logout Gagal!', `Terjadi kesalahan: ${error.message}`);
+            return;
+        }
+        currentUser = null;
+        currentBalance = 0;
+        highestKemenangan = 0;
+        totalKemenanganSesi = 0;
+        totalKekalahan = 0;
+        gameRunning = false;
+        
+        // Reset UI
+        updateAuthUI();
+        balanceDisplay.textContent = 'Login untuk bermain';
+        playerNameDisplay.textContent = 'Guest';
+        playerStatusDisplay.textContent = 'Offline';
+        totalKemenanganSesiDisplay.textContent = '0';
+        totalKekalahanDisplay.textContent = '0';
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear game board
+        board = Array(BOARD_HEIGHT).fill(null).map(() => Array(BOARD_WIDTH).fill(0));
+        drawBoard(); // Redraw empty board
+        hideGameControls();
+        const startBtn = document.getElementById('startButton');
+        if (startBtn) startBtn.remove(); // Remove if exists
+        closeModal('sidebarOverlay'); // Memanggil closeModal dengan ID modal
+        showCustomAlert('Berhasil Logout!', 'Anda telah keluar dari akun.', () => {
+            showModal(authModal); // Show login/register pop-up after logout
+        });
+    }
+
+    // --- Profile & Balance Logic ---
+    async function fetchSaldoAndKemenangan() {
+        if (!currentUser) {
+            showMessage('Error: Tidak ada user aktif untuk mengambil saldo/kemenangan.', 'error');
+            return;
+        }
+        showMessage('Memuat data pemain...', 'info');
+        balanceDisplay.textContent = 'Memuat...';
+        totalKemenanganSesiDisplay.textContent = 'Memuat...';
+        totalKekalahanDisplay.textContent = 'Memuat...';
+        profileUsernameDisplay.textContent = 'Memuat...';
+        profileEmailDisplay.textContent = 'Memuat...';
+        profileSaldoDisplay.textContent = 'Memuat...';
+        profileHighestWinDisplay.textContent = 'Memuat...';
+
+        try {
+            const { data, error } = await supabase
+                .from('users_data')
+                .select('saldo, username, highest_kemenangan, email')
+                .eq('user_id', currentUser.id)
+                .single();
+
+            if (error) {
+                console.error('Error fetching data:', error.message);
+                if (error.code === 'PGRST116' || error.message.includes('0 rows')) {
+                    console.warn('User entry not found in users_data. Creating new entry with default saldo...');
+                    const usernameFromMeta = currentUser.user_metadata?.username || currentUser.email?.split('@')[0] || 'Unknown';
+                    const success = await createNewUserEntryWithDefaultSaldo(currentUser.id, currentUser.email, usernameFromMeta);
+                    if (success) {
+                        await fetchSaldoAndKemenangan(); // Retry fetching after creating
+                    }
+                } else {
+                    showMessage(`Gagal memuat data: ${error.message}. Periksa RLS/Koneksi.`, 'error');
+                    balanceDisplay.textContent = 'Gagal';
+                    totalKemenanganSesiDisplay.textContent = 'Gagal';
+                    totalKekalahanDisplay.textContent = 'Gagal';
+                }
+                return;
+            }
+
+            if (data) {
+                currentBalance = data.saldo || 0;
+                highestKemenangan = data.highest_kemenangan || 0;
+                const username = data.username || currentUser.user_metadata?.username || currentUser.email?.split('@')[0] || 'Pemain';
+                const email = data.email || currentUser.email;
+
+                balanceDisplay.textContent = currentBalance.toLocaleString('id-ID');
+                playerNameDisplay.textContent = username;
+                playerStatusDisplay.textContent = 'Login';
+                totalKemenanganSesiDisplay.textContent = totalKemenanganSesi.toLocaleString('id-ID');
+                totalKekalahanDisplay.textContent = totalKekalahan.toLocaleString('id-ID');
+
+                // Update profile modal fields
+                profileUsernameDisplay.textContent = username;
+                profileEmailDisplay.textContent = email;
+                profileSaldoDisplay.textContent = currentBalance.toLocaleString('id-ID');
+                profileHighestWinDisplay.textContent = highestKemenangan.toLocaleString('id-ID');
+
+                showMessage('Data pemain dimuat!', 'success');
+                console.log('Saldo fetched:', currentBalance, 'Highest Kemenangan:', highestKemenangan);
+                if (currentBalance >= GAME_START_COST) {
+                    showMessage(`Siap! Saldo Anda: Rp${currentBalance.toLocaleString('id-ID')}. Biaya per game: Rp${GAME_START_COST.toLocaleString('id-ID')}.`, 'info');
+                } else {
+                    showMessage(`Saldo Anda tidak cukup (Rp${currentBalance.toLocaleString('id-ID')}). Perlu Rp${GAME_START_COST.toLocaleString('id-ID')} untuk mulai. Top up untuk bermain!`, 'error');
+                    balanceDisplay.classList.add('animate-loss');
+                    setTimeout(() => balanceDisplay.classList.remove('animate-loss'), 500);
+                }
+            }
+
+        } catch (err) {
+            console.error('Unexpected error in fetchSaldoAndKemenangan:', err);
+            showMessage('Terjadi kesalahan tak terduga saat memuat data pemain.', 'error');
+            balanceDisplay.textContent = 'Error';
+            totalKemenanganSesiDisplay.textContent = 'Error';
+            totalKekalahanDisplay.textContent = 'Error';
+        }
+    }
+
+    async function createNewUserEntryWithDefaultSaldo(userId, email, username) {
+        const DEFAULT_STARTING_SALDO = 0;
+        const DEFAULT_HIGHEST_KEMENANGAN = 0;
+
+        try {
+            const { error } = await supabase
+                .from('users_data')
+                .insert([
+                    { user_id: userId, saldo: DEFAULT_STARTING_SALDO, email: email, username: username, peran: 'Players_Guest', highest_kemenangan: DEFAULT_HIGHEST_KEMENANGAN }
+                ]);
+
+            if (error) {
+                console.error('Error creating new user entry:', error.message);
+                showCustomAlert('Error!', `Gagal membuat entry user baru: ${error.message}.`);
+                return false;
+            }
+            console.log('New user entry created with default saldo:', DEFAULT_STARTING_SALDO);
+            currentBalance = DEFAULT_STARTING_SALDO;
+            highestKemenangan = DEFAULT_HIGHEST_KEMENANGAN;
+            balanceDisplay.textContent = currentBalance.toLocaleString('id-ID');
+            totalKemenanganSesi = 0;
+            totalKekalahan = 0;
+            totalKemenanganSesiDisplay.textContent = '0';
+            totalKekalahanDisplay.textContent = '0';
+            showCustomAlert('Sukses!', 'User baru dibuat dengan saldo awal!');
+            return true;
+        } catch (err) {
+            console.error('Unexpected error in createNewUserEntryWithDefaultSaldo:', err);
+            showCustomAlert('Error!', 'Terjadi kesalahan tak terduga saat membuat user baru.');
+            return false;
+        }
+    }
+
+    let updateSaldoTimeout;
+    async function updateSaldo(amount, updateDB = true) {
+        currentBalance += amount;
+        balanceDisplay.textContent = currentBalance.toLocaleString('id-ID');
+        balanceDisplay.classList.add(amount > 0 ? 'animate-gain' : 'animate-loss');
+        setTimeout(() => balanceDisplay.classList.remove('animate-gain', 'animate-loss'), 500);
+
+        if (amount > 0) {
+            totalKemenanganSesi += amount;
+        } else {
+            totalKekalahan += Math.abs(amount);
+        }
+        updateTotalKemenanganSesiDisplay();
+        updateTotalKekalahanDisplay();
+
+        if (!currentUser || !updateDB) {
+            console.log('Saldo lokal diperbarui, namun tidak ke DB (user tidak ada atau updateDB=false).');
+            return;
+        }
+
+        clearTimeout(updateSaldoTimeout);
+        updateSaldoTimeout = setTimeout(async () => {
+            try {
+                const { error } = await supabase
+                    .from('users_data')
+                    .update({ saldo: currentBalance })
+                    .eq('user_id', currentUser.id);
+
+                if (error) {
+                    console.error('Error updating saldo:', error.message);
+                    showMessage(`Gagal update saldo: ${error.message}. Periksa RLS/Koneksi.`, 'error');
+                    return;
+                }
+                console.log('Saldo updated successfully to DB:', currentBalance);
+            } catch (err) {
+                console.error('Unexpected error in updateSaldo DB update:', err);
+                showMessage('Terjadi kesalahan tak terduga saat update saldo ke DB.', 'error');
+            }
+        }, 500);
+    }
+
+    async function saveHighestKemenangan(newKemenangan) {
+        if (!currentUser) {
+            console.warn('Tidak bisa menyimpan kemenangan tertinggi: Tidak ada user login.');
+            return;
+        }
+        if (newKemenangan <= highestKemenangan) {
+            console.log('Kemenangan baru tidak lebih tinggi dari kemenangan tertinggi yang ada.');
+            return;
+        }
+
+        try {
+            const { error } = await supabase
+                .from('users_data')
+                .update({ highest_kemenangan: newKemenangan })
+                .eq('user_id', currentUser.id);
+
+            if (error) {
+                console.error('Error saving highest kemenangan:', error.message);
+                showCustomAlert('Gagal!', `Gagal menyimpan kemenangan tertinggi: ${error.message}`);
+            } else {
+                highestKemenangan = newKemenangan;
+                console.log('Kemenangan tertinggi berhasil disimpan:', newKemenangan);
+                showCustomAlert('Kemenangan Baru!', `Kemenangan tertinggi baru: Rp${newKemenangan.toLocaleString('id-ID')}!`);
+            }
+        } catch (err) {
+            console.error('Unexpected error in saveHighestKemenangan:', err);
+            showCustomAlert('Error!', 'Terjadi kesalahan tak terduga saat menyimpan kemenangan tertinggi.');
+        }
+    }
+
+    // --- Deposit & Withdraw Logic ---
+    async function openDepositModal() {
+        playSound(clickSound);
+        if (!currentUser) { showCustomAlert('Login Diperlukan', 'Anda harus login untuk melakukan deposit.'); return; }
+        showModal(depositModal);
+        depEmailInput.value = currentUser.email;
+
+        const { data, error } = await supabase
+            .from('deposit_config')
+            .select('*')
+            .eq('metode', 'eWallet')
+            .single();
+
+        if (error || !data) {
+            showCustomAlert('Error', 'Gagal mengambil data eWallet.');
+            return;
+        }
+        depNamaInput.value = data.nama;
+        depNomorInput.value = data.nomor;
+        depSubmitBtn.dataset.metode = 'eWallet';
+    }
+
+    async function openQrisForm() {
+        playSound(clickSound);
+        const { data, error } = await supabase
+            .from('deposit_config')
+            .select('*')
+            .eq('metode', 'QRIS')
+            .single();
+
+        if (error || !data) {
+            showCustomAlert('Error', 'Gagal mengambil data QRIS.');
+            return;
+        }
+        formQris.style.display = 'block';
+        gambarQris.src = data.qris_url;
+        depSubmitBtn.dataset.metode = 'QRIS';
+        btnKembaliEwallet.style.display = 'inline-block';
+    }
+
+    async function kembaliEwallet() {
+        playSound(clickSound);
+        const { data, error } = await supabase
+            .from('deposit_config')
+            .select('*')
+            .eq('metode', 'eWallet')
+            .single();
+
+        if (error || !data) {
+            showCustomAlert('Error', 'Gagal mengambil data eWallet.');
+            return;
+        }
+        formQris.style.display = 'none';
+        depNamaInput.value = data.nama;
+        depNomorInput.value = data.nomor;
+        depSubmitBtn.dataset.metode = 'eWallet';
+        btnKembaliEwallet.style.display = 'none';
+    }
+
+    async function submitDeposit() {
+        playSound(clickSound);
+        if (!currentUser) { showCustomAlert('Login Diperlukan', 'Anda harus login untuk melakukan deposit.'); return; }
+        const nama = depNamaInput.value.trim();
+        const email = depEmailInput.value.trim();
+        const nomor = depNomorInput.value.trim();
+        const jumlah = parseInt(depJumlahInput.value);
+        const metode = depSubmitBtn.dataset.metode;
+
+        if (!nama || !nomor || isNaN(jumlah) || jumlah <= 0 || !email) {
+            showCustomAlert('Peringatan', 'Lengkapi semua kolom deposit dengan benar.');
+            return;
+        }
+
+        const now = new Date();
+        const dateString = now.toLocaleString('id-ID');
+        const newRowHTML = `<tr><td>${dateString}</td><td>Rp${jumlah.toLocaleString('id-ID')}</td><td class="status-pending">Pending</td></tr>`;
+        if (riwayatDepositModalTableBody.querySelector('.empty')) {
+            riwayatDepositModalTableBody.innerHTML = '';
+        }
+        riwayatDepositModalTableBody.insertAdjacentHTML('afterbegin', newRowHTML);
+
+        const { error } = await supabase.from('deposit_requests').insert([
+            { user_id: currentUser.id, nama, metode, amount: jumlah, status: 'pending', email: email }
+        ]);
+
+        if (error) {
+            console.error(error);
+            showCustomAlert('Gagal!', 'Gagal kirim deposit. Silakan coba lagi.');
+        } else {
+            showCustomAlert('Berhasil!', 'Permintaan deposit dikirim.');
+            closeModal('depositModal'); // Memanggil closeModal dengan ID modal
+            await fetchSaldoAndKemenangan(); // Refresh saldo
+            await loadHistory('riwayat-deposit-modal', 'deposit_requests');
+        }
+    }
+
+    async function openWithdrawModal() {
+        playSound(clickSound);
+        if (!currentUser) { showCustomAlert('Login Diperlukan', 'Anda harus login untuk melakukan penarikan.'); return; }
+        showModal(withdrawModal);
+        withEmailInput.value = currentUser.email;
+        withJumlahInput.setAttribute('max', currentBalance);
+    }
+
+    function handleWithdrawMethodChange() {
+        playSound(clickSound);
+        const selectedMethod = withMetodeSelect.value;
+        if (selectedMethod === 'Bank') {
+            withBankInput.style.display = 'block';
+            labelBank.style.display = 'block';
+            withBankInput.setAttribute('required', 'true');
+        } else {
+            withBankInput.style.display = 'none';
+            labelBank.style.display = 'none';
+            withBankInput.removeAttribute('required');
+            withBankInput.value = '';
+        }
+    }
+
+    async function submitWithdraw() {
+        playSound(clickSound);
+        if (!currentUser) { showCustomAlert('Login Diperlukan', 'Anda harus login untuk melakukan penarikan.'); return; }
+
+        const nama = withNamaInput.value.trim();
+        const email = withEmailInput.value.trim();
+        const metode = withMetodeSelect.value;
+        const nomor = withNomorInput.value.trim();
+        const bank = withBankInput.value.trim();
+        const jumlahInput = withJumlahInput.value;
+        const submitButton = withSubmitBtn;
+
+        if (!nama || !metode || !nomor || !jumlahInput) {
+            showCustomAlert('Peringatan', 'Lengkapi semua kolom yang wajib diisi.');
+            return;
+        }
+
+        if (metode === 'Bank' && !bank) {
+            showCustomAlert('Peringatan', 'Nama Bank harus diisi untuk metode Transfer Bank.');
+            return;
+        }
+        const jumlah = parseInt(jumlahInput);
+        if (isNaN(jumlah) || jumlah <= 0) {
+            showCustomAlert('Peringatan', 'Jumlah penarikan harus angka positif yang valid.');
+            return;
+        }
+
+        const MIN_WITHDRAWAL_AMOUNT = 10000;
+        if (jumlah < MIN_WITHDRAWAL_AMOUNT) {
+            showCustomAlert('Penarikan Minimum', `Jumlah penarikan minimal adalah Rp.${MIN_WITHDRAWAL_AMOUNT.toLocaleString('id-ID')}.`);
+            return;
+        }
+
+        if (jumlah > currentBalance) {
+            showCustomAlert('Saldo Tidak Cukup', `Saldo Anda saat ini Rp.${currentBalance.toLocaleString('id-ID')}. Jumlah penarikan melebihi saldo.`);
+            return;
+        }
+
+        const bankAccountInfo = {
+            bank_name: (metode === 'Bank' && bank) ? bank : metode,
+            account_number: nomor,
+            account_holder: nama,
+            email: email
+        };
+
+        const now = new Date();
+        const dateString = now.toLocaleString('id-ID');
+        const newRowHTML = `<tr><td>${dateString}</td><td>Rp${jumlah.toLocaleString('id-ID')}</td><td class="status-pending">Pending</td></tr>`;
+        if (riwayatPenarikanModalTableBody.querySelector('.empty')) {
+            riwayatPenarikanModalTableBody.innerHTML = '';
+        }
+        riwayatPenarikanModalTableBody.insertAdjacentHTML('afterbegin', newRowHTML);
+
+        submitButton.classList.add('loading');
+        submitButton.disabled = true;
+
+        try {
+            const session = await supabase.auth.getSession();
+            if (!session.data.session) {
+                showCustomAlert('Sesi Tidak Valid', 'Sesi pengguna tidak valid. Silakan login kembali.');
+                throw new Error('No active session.');
+            }
+            const accessToken = session.data.session.access_token;
+            const edgeFunctionUrl = `${SUPABASE_URL}/functions/v1/processed_withdrawal`;
+
+            const response = await fetch(edgeFunctionUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
+                body: JSON.stringify({ amount: jumlah, bank_account_info: bankAccountInfo })
+            });
+
+            if (!response.ok) {
+                const errorResponseText = await response.text();
+                console.error("HTTP Error response from Edge Function:", errorResponseText);
+                let errorMessage = 'Terjadi kesalahan tidak dikenal saat memproses penarikan.';
+                try {
+                    const errorData = JSON.parse(errorResponseText);
+                    errorMessage = errorData.message || errorMessage;
+                } catch (parseError) {
+                    errorMessage = `Server Error: ${errorResponseText.substring(0, 150)}...`;
+                }
+                showCustomAlert('Gagal!', errorMessage);
+                return;
+            }
+
+            const data = await response.json();
+            if (data.message) {
+                showCustomAlert('Berhasil!', data.message);
+                closeModal('withdrawModal'); // Memanggil closeModal dengan ID modal
+                if (data.new_saldo !== undefined) {
+                    currentBalance = data.new_saldo;
+                    balanceDisplay.textContent = `Rp.${currentBalance.toLocaleString('id-ID')}`;
+                } else {
+                    await fetchSaldoAndKemenangan();
+                }
+                await loadHistory('riwayat-penarikan-modal', 'withdraw_requests');
+            } else {
+                showCustomAlert('Gagal!', 'Permintaan berhasil dikirim, tetapi tidak ada konfirmasi yang jelas.');
+            }
+        } catch (error) {
+            console.error('Error saat memanggil API penarikan:', error);
+            showCustomAlert('Error Jaringan', 'Gagal terhubung ke server. Silakan coba lagi. Detail: ' + error.message);
+        } finally {
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+        }
+    }
+    async function openHistoryModal() {
+        playSound(clickSound);
+        if (!currentUser) { showCustomAlert('Login Diperlukan', 'Anda harus login untuk melihat riwayat transaksi.'); return; }
+        showModal(historyModal);
+        await loadHistory('riwayat-deposit-modal', 'deposit_requests');
+        await loadHistory('riwayat-penarikan-modal', 'withdraw_requests');
+    }
+
+    async function loadHistory(tableId, tableName) {
+        const tableBody = document.querySelector(`#${tableId} tbody`);
+        tableBody.innerHTML = '<tr><td colspan="3" class="empty">Memuat data...</td></tr>';
+
+        if (!currentUser) {
+            tableBody.innerHTML = '<tr><td colspan="3" class="empty">Silakan login untuk melihat riwayat.</td></tr>';
+            return;
+        }
+
+        const { data, error } = await supabase
+            .from(tableName)
+            .select('created_at, amount, status')
+            .eq('user_id', currentUser.id)
+            .order('created_at', { ascending: false });
+        if (error) {
+            console.error(`Error fetching ${tableName} history:`, error.message);
+            tableBody.innerHTML = `<tr><td colspan="3" class="empty">Gagal memuat riwayat.</td></tr>`;
+        } else if (!data || data.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="3" class="empty">Belum ada riwayat.</td></tr>`;
+        } else {
+            tableBody.innerHTML = '';
+            data.forEach(row => {
+                const date = new Date(row.created_at).toLocaleString('id-ID');
+                const statusClass = `status-${row.status}`;
+                tableBody.innerHTML += `<tr><td>${date}</td><td>Rp.${row.amount.toLocaleString('id-ID')}</td><td class="${statusClass}">${row.status.charAt(0).toUpperCase() + row.status.slice(1)}</td></tr>`;
+            });
+        }
+    }
+
+    // --- Game Logic (from susunbalok.html) ---
+    const TILE_SIZE = 20;
+    const BOARD_WIDTH = 12;
+    const BOARD_HEIGHT = 17;
+    canvas.width = BOARD_WIDTH * TILE_SIZE;
+    canvas.height = BOARD_HEIGHT * TILE_SIZE;
+
+    let board = Array(BOARD_HEIGHT).fill(null).map(() => Array(BOARD_WIDTH).fill(0));
+    let currentPiece = null;
+    let currentX = 0;
+    let currentY = 0;
+
+    const TETROMINOS = [
+        { shape: [[0, 1, 0], [1, 1, 1], [0, 0, 0]], color: '#FFD54F', cost: 200, clear_value_per_block: 100 }, // T (Yellow)
+        { shape: [[1, 1, 0], [0, 1, 1], [0, 0, 0]], color: '#81C784', cost: 200, clear_value_per_block: 100 }, // S (Green)
+        { shape: [[0, 1, 1], [1, 1, 0], [0, 0, 0]], color: '#FF8A65', cost: 200, clear_value_per_block: 300 }, // Z (Orange-Red)
+        { shape: [[1, 1], [1, 1]], color: '#64B5F6', cost: 200, clear_value_per_block: 50 }, // O (Blue)
+        { shape: [[1, 0, 0], [1, 1, 1], [0, 0, 0]], color: '#F48FB1', cost: 200, clear_value_per_block: 80 }, // L (Pink)
+        { shape: [[0, 0, 1], [1, 1, 1], [0, 0, 0]], color: '#BA68C8', cost: 200, clear_value_per_block: 90 }, // J (Purple)
+        { shape: [[1], [1], [1], [1]], color: '#90CAF9', cost: 200, clear_value_per_block: 150 } // I (Light Blue)
+    ];
+    const GAME_START_COST = 200;
+
+    function drawBoard() {
+        for (let row = 0; row < BOARD_HEIGHT; row++) {
+            for (let col = 0; col < BOARD_WIDTH; col++) {
+                ctx.fillStyle = board[row][col] !== 0 ? board[row][col].color : '#F0F4C3'; /* Light Yellow-Green for empty */
+                ctx.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                ctx.strokeStyle = '#DCE775'; /* Slightly darker yellow-green for grid lines */
+                ctx.strokeRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            }
+        }
+    }
+
+    function drawPiece(piece, x, y) {
+        if (!piece) return;
+        for (let row = 0; row < piece.shape.length; row++) {
+            for (let col = 0; col < piece.shape[row].length; col++) {
+                if (piece.shape[row][col]) {
+                    ctx.fillStyle = piece.color;
+                    ctx.fillRect((x + col) * TILE_SIZE, (y + row) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    ctx.strokeStyle = '#A5D6A7'; /* Light Green for piece borders */
+                    ctx.strokeRect((x + col) * TILE_SIZE, (y + row) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                }
+            }
+        }
+    }
+
+    function isValidMove(piece, newX, newY) {
+        for (let row = 0; row < piece.shape.length; row++) {
+            for (let col = 0; col < piece.shape[row].length; col++) {
+                if (piece.shape[row][col]) {
+                    const boardX = newX + col;
+                    const boardY = newY + row;
+
+                    if (boardX < 0 || boardX >= BOARD_WIDTH || boardY >= BOARD_HEIGHT) {
+                        return false;
+                    }
+                    if (boardY >= 0 && board[boardY][boardX] !== 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    function placePiece() {
+        for (let row = 0; row < currentPiece.shape.length; row++) {
+            for (let col = 0; col < currentPiece.shape[row].length; col++) {
+                if (currentPiece.shape[row][col]) {
+                    if (currentY + row < 0) {
+                        gameOver();
+                        return;
+                    }
+                    board[currentY + row][currentX + col] = {
+                        color: currentPiece.color,
+                        clear_value_per_block: currentPiece.clear_value_per_block
+                    };
+                }
+            }
+        }
+        playSound(blockLandSound);
+        clearLines();
+        createNewPiece();
+    }
+
+    function rotatePiece(piece) {
+        const newShape = Array(piece.shape[0].length).fill(null).map(() => Array(piece.shape.length).fill(0));
+        for (let row = 0; row < piece.shape.length; row++) {
+            for (let col = 0; col < piece.shape[row].length; col++) {
+                newShape[col][piece.shape.length - 1 - row] = piece.shape[row][col];
+            }
+        }
+        return { ...piece, shape: newShape };
+    }
+
+    function clearLines() {
+        let linesCleared = 0;
+        let coinsEarned = 0;
+
+        for (let row = BOARD_HEIGHT - 1; row >= 0; row--) {
+            if (board[row].every(cell => cell !== 0)) {
+                linesCleared++;
+                for (let col = 0; col < BOARD_WIDTH; col++) {
+                    coinsEarned += board[row][col].clear_value_per_block || 1;
+                }
+                for (let r = row; r > 0; r--) {
+                    board[r] = [...board[r - 1]];
+                }
+                board[0] = Array(BOARD_WIDTH).fill(0);
+                row++;
+            }
+        }
+
+        if (linesCleared > 0) {
+            playSound(lineClearSound);
+            updateSaldo(coinsEarned);
+            showMessage(`+Rp${coinsEarned.toLocaleString('id-ID')} dari ${linesCleared} baris!`, 'success');
+        }
+    }
+
+    function updateTotalKemenanganSesiDisplay() {
+        totalKemenanganSesiDisplay.textContent = totalKemenanganSesi.toLocaleString('id-ID');
+    }
+
+    function updateTotalKekalahanDisplay() {
+        totalKekalahanDisplay.textContent = totalKekalahan.toLocaleString('id-ID');
+    }
+
+    function createNewPiece() {
+        currentPiece = getRandomPiece();
+        currentY = 0;
+        currentX = Math.floor(BOARD_WIDTH / 2) - Math.floor(currentPiece.shape[0].length / 2);
+
+        if (currentBalance < currentPiece.cost) {
+            showMessage(`Saldo tidak cukup untuk balok ini (perlu Rp${currentPiece.cost.toLocaleString('id-ID')})!`, 'error');
+            gameOver();
+            return;
+        }
+
+        updateSaldo(-currentPiece.cost);
+        showMessage(`-${currentPiece.cost.toLocaleString('id-ID')} Saldo. Sisa: Rp${currentBalance.toLocaleString('id-ID')}`, 'info');
+
+        if (!isValidMove(currentPiece, currentX, currentY)) {
+            gameOver();
+        }
+    }
+
+    let dropInterval = 400;
+    let lastDropTime = 0;
+    let animationFrameId = null;
+
+    function gameLoop(timestamp) {
+        if (!gameRunning) {
+            cancelAnimationFrame(animationFrameId);
+            return;
+        }
+
+        if (!lastDropTime) lastDropTime = timestamp;
+        const deltaTime = timestamp - lastDropTime;
+
+        if (deltaTime > dropInterval) {
+            if (isValidMove(currentPiece, currentX, currentY + 1)) {
+                currentY++;
+            } else {
+                placePiece();
+            }
+            lastDropTime = timestamp;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBoard();
+        drawPiece(currentPiece, currentX, currentY);
+
+        animationFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    function startGamePrompt() {
+        hideGameControls();
+        const existingStartButton = document.getElementById('startButton');
+        if (existingStartButton) existingStartButton.remove();
+
+        // Clear canvas and draw empty board when not playing
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        board = Array(BOARD_HEIGHT).fill(null).map(() => Array(BOARD_WIDTH).fill(0));
+        drawBoard();
+
+        if (!currentUser) {
+            showMessage('Silakan Login atau Daftar untuk mulai bermain!', 'info');
+            return;
+        }
+
+        const startButton = document.createElement('button');
+        startButton.textContent = `Mulai Game (Bayar Rp${GAME_START_COST.toLocaleString('id-ID')})`;
+        startButton.id = 'startButton';
+        startButton.className = 'control-btn'; // Use existing button style
+        startButton.style.cssText = `
+            margin-top: 20px;
+            width: 100%;
+            grid-area: unset; /* Override grid-area */
+            max-width: 300px;
+        `;
+        startButton.onclick = initiateGameStart;
+        document.querySelector('.game-container').insertBefore(startButton, document.querySelector('.controls'));
+        showMessage(`Klik "Mulai Game" untuk bermain. Biaya: Rp${GAME_START_COST.toLocaleString('id-ID')}.`, 'info');
+    }
+
+    async function initiateGameStart() {
+        playSound(clickSound);
+        document.getElementById('startButton')?.remove();
+
+        if (currentBalance < GAME_START_COST) {
+            showCustomAlert('Saldo Tidak Cukup!', `Saldo Anda saat ini Rp${currentBalance.toLocaleString('id-ID')}. Perlu Rp${GAME_START_COST.toLocaleString('id-ID')} untuk mulai. Top up untuk bermain!`);
+            balanceDisplay.classList.add('animate-loss');
+            setTimeout(() => balanceDisplay.classList.remove('animate-loss'), 500);
+            startGamePrompt(); // Show start button again
+            return;
+        }
+
+        await updateSaldo(-GAME_START_COST, true);
+        showMessage(`Rp${GAME_START_COST.toLocaleString('id-ID')} dikurangi untuk memulai game.`, 'info');
+
+        gameRunning = true;
+        board = Array(BOARD_HEIGHT).fill(null).map(() => Array(BOARD_WIDTH).fill(0));
+        totalKemenanganSesi = 0;
+        totalKekalahan = 0;
+        updateTotalKemenanganSesiDisplay();
+        updateTotalKekalahanDisplay();
+        messageArea.textContent = '';
+
+        showGameControls();
+        createNewPiece();
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(gameLoop);
+        playBackgroundMusic();
+    }
+
+    function gameOver() {
+        gameRunning = false;
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        currentPiece = null;
+
+        showMessage('GAME OVER! Saldo habis atau tidak ada tempat.', 'error');
+        console.log('Game Over! Saldo Akhir: ' + currentBalance.toLocaleString('id-ID'));
+        console.log('Total Kemenangan Sesi Akhir: ' + totalKemenanganSesi.toLocaleString('id-ID'));
+        console.log('Total Kekalahan Sesi Akhir: ' + totalKekalahan.toLocaleString('id-ID'));
+
+        if (totalKemenanganSesi > highestKemenangan) {
+            saveHighestKemenangan(totalKemenanganSesi);
+        }
+
+        hideGameControls();
+        const existingPlayAgainBtn = document.getElementById('playAgainBtn');
+        if (existingPlayAgainBtn) existingPlayAgainBtn.remove();
+
+        const playAgainBtn = document.createElement('button');
+        playAgainBtn.textContent = 'Main Lagi';
+        playAgainBtn.id = 'playAgainBtn';
+        playAgainBtn.className = 'control-btn'; // Use existing button style
+        playAgainBtn.style.cssText = `
+            margin-top: 20px;
+            width: 100%;
+            grid-area: unset;
+            max-width: 300px;
+        `;
+        playAgainBtn.onclick = () => {
+            playSound(clickSound);
+            playAgainBtn.remove();
+            startGamePrompt(); // Prompt to start game again
+        };
+        document.querySelector('.game-container').insertBefore(playAgainBtn, document.querySelector('.message-area'));
+    }
+
+    function hideGameControls() {
+        moveLeftBtn.style.display = 'none';
+        rotateBtn.style.display = 'none';
+        moveRightBtn.style.display = 'none';
+        softDropBtn.style.display = 'none';
+        document.querySelector('.controls').style.display = 'none';
+    }
+
+    function showGameControls() {
+        moveLeftBtn.style.display = 'flex';
+        rotateBtn.style.display = 'flex';
+        moveRightBtn.style.display = 'flex';
+        softDropBtn.style.display = 'flex';
+        document.querySelector('.controls').style.display = 'grid'; // Re-enable grid layout
+    }
+
+    function getRandomPiece() {
+        const randomIndex = Math.floor(Math.random() * TETROMINOS.length);
+        return JSON.parse(JSON.stringify(TETROMINOS[randomIndex]));
+    }
+
+    function showMessage(msg, type = 'info') {
+        messageArea.textContent = msg;
+        messageArea.className = 'message-area ' + type;
+    }
+
+    // --- Event Listeners ---
+    document.addEventListener('DOMContentLoaded', () => {
+        checkUserSession(); // This will trigger login/register modal if not logged in
+        hideGameControls();
+        drawBoard(); // Draw empty board on load
+
+        // Manual button clicks for audio
+        document.body.addEventListener('click', () => {
+            playBackgroundMusic();
+        }, { once: true }); // Only attempt autoplay on first user click
+
+        // Hamburger Menu
+        hamburgerBtn.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', (e) => {
+            if (e.target === sidebarOverlay) {
+                toggleSidebar(); // Close sidebar if clicking outside sidebar content
+            }
+        });
+
+        // Sidebar Navigation Buttons
+        sidebarLoginBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            authModalTitle.textContent = 'Login';
+            loginForm.style.display = 'flex';
+            registerForm.style.display = 'none';
+            showModal(authModal);
+        });
+        sidebarRegisterBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            authModalTitle.textContent = 'Daftar';
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'flex';
+            showModal(authModal);
+        });
+        sidebarProfileBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            if (currentUser) {
+                showModal(profileModal);
+            } else {
+                showCustomAlert('Login Diperlukan', 'Silakan login untuk melihat profil.');
+            }
+        });
+        sidebarDepositBtn.addEventListener('click', openDepositModal);
+        sidebarWithdrawBtn.addEventListener('click', openWithdrawModal);
+        sidebarHistoryBtn.addEventListener('click', openHistoryModal);
+        sidebarEventBtn.addEventListener('click', () => {
+            playSound(clickSound);
+            showCustomAlert('Fitur Event', 'Pantau terus untuk event dan promosi menarik!');
+        });
+        sidebarLogoutBtn.addEventListener('click', handleLogout);
+
+        // Form Submissions
+        loginForm.addEventListener('submit', handleLogin);
+        registerForm.addEventListener('submit', handleRegister);
+        depSubmitBtn.addEventListener('click', submitDeposit);
+        withMetodeSelect.addEventListener('change', handleWithdrawMethodChange);
+        withSubmitBtn.addEventListener('click', submitWithdraw);
+        btnQris.addEventListener('click', openQrisForm);
+        btnKembaliEwallet.addEventListener('click', kembaliEwallet);
+
+        // Memperbaiki Event Listener untuk tombol "Batal"
+        document.querySelectorAll('.modal-content button.secondary').forEach(button => {
+            if (button.textContent.includes('Batal') || button.textContent.includes('Tutup')) {
+                button.addEventListener('click', (e) => {
+                    const parentModal = e.target.closest('.modal-overlay');
+                    if (parentModal) {
+                        closeModal(parentModal.id); // Panggil closeModal dengan ID modal yang benar
+                    }
+                });
+            }
+        });
+
+
+        // Copy button functionality
+        document.querySelectorAll('.btn-copy').forEach(button => {
+            button.addEventListener('click', (event) => {
+                playSound(clickSound);
+                const targetId = event.currentTarget.dataset.target;
+                const inputElement = document.getElementById(targetId);
+                if (inputElement) {
+                    inputElement.select();
+                    inputElement.setSelectionRange(0, 99999);
+                    navigator.clipboard.writeText(inputElement.value)
+                        .then(() => showCustomAlert('Berhasil Disalin!', 'Nomor berhasil disalin: ' + inputElement.value))
+                        .catch(err => showCustomAlert('Gagal!', 'Gagal menyalin nomor. Silakan salin manual.'));
+                }
+            });
+        });
+
+        // Game Controls Event Listeners (only active if gameRunning is true)
+        document.addEventListener('keydown', e => {
+            if (!gameRunning || !currentPiece) return;
+            let moved = false;
+            let newX = currentX;
+            let newY = currentY;
+            let newPiece = currentPiece;
+
+            if (e.key === 'ArrowLeft') { newX--; moved = true; playSound(clickSound); }
+            else if (e.key === 'ArrowRight') { newX++; moved = true; playSound(clickSound); }
+            else if (e.key === 'ArrowDown') { newY++; moved = true; lastDropTime = performance.now(); playSound(clickSound); }
+            else if (e.key === 'ArrowUp' || e.key === ' ') { newPiece = rotatePiece(currentPiece); moved = true; playSound(clickSound); }
+            else if (e.key === 'Control' || e.key === 'Enter') {
+                while (isValidMove(currentPiece, currentX, currentY + 1)) { currentY++; }
+                placePiece();
+                return;
+            }
+
+            if (moved && isValidMove(newPiece, newX, newY)) {
+                currentX = newX;
+                currentY = newY;
+                currentPiece = newPiece;
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height); drawBoard(); drawPiece(currentPiece, currentX, currentY);
+        });
+
+        moveLeftBtn.addEventListener('click', () => { if (!gameRunning || !currentPiece) return; if (isValidMove(currentPiece, currentX - 1, currentY)) { currentX--; playSound(clickSound); ctx.clearRect(0, 0, canvas.width, canvas.height); drawBoard(); drawPiece(currentPiece, currentX, currentY); } });
+        rotateBtn.addEventListener('click', () => { if (!gameRunning || !currentPiece) return; const newPiece = rotatePiece(currentPiece); if (isValidMove(newPiece, currentX, currentY)) { currentPiece = newPiece; playSound(clickSound); ctx.clearRect(0, 0, canvas.width, canvas.height); drawBoard(); drawPiece(currentPiece, currentX, currentY); } });
+        moveRightBtn.addEventListener('click', () => { if (!gameRunning || !currentPiece) return; if (isValidMove(currentPiece, currentX + 1, currentY)) { currentX++; playSound(clickSound); ctx.clearRect(0, 0, canvas.width, canvas.height); drawBoard(); drawPiece(currentPiece, currentX, currentY); } });
+        softDropBtn.addEventListener('click', () => { if (!gameRunning || !currentPiece) return; if (isValidMove(currentPiece, currentX, currentY + 1)) { currentY++; lastDropTime = performance.now(); } else { placePiece(); } playSound(clickSound); ctx.clearRect(0, 0, canvas.width, canvas.height); drawBoard(); drawPiece(currentPiece, currentX, currentY); });
+    });
+    
+</script>
+</body>
+</html>
