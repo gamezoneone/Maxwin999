@@ -632,18 +632,18 @@
             .modal-content input, .modal-content select { font-size: 0.85em; padding: 8px 12px; }
             .modal-content button { font-size: 0.9em; padding: 10px; }
             .controls { gap: 8px; max-width: 250px; }
-            .control-btn { padding: 10px; font-size: 1.2em; border-radius: 10px; }
-             .control-btn.drop {
-        font-size: 1.4em;
-        padding: 5px auto;
+            .control-btn { padding: 3px 10px; font-size: 1.2em; border-radius: 10px; }
         }
-        #startButton {
+   #startButton {
     display: block;
     width: 80%;
     padding: 10px 10px; /* Kurangi padding */
     margin: 15px auto;
     background-color: var(--cta-button-bg);
-    color: var(--white);
+    color: black;
+    background: red;
+    border-radius: 5px;
+    border: 1 solid gold;
     font-size: 1em;
     font-weight: bold;
     border: none;
@@ -652,15 +652,14 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: background-color 0.2s ease, transform 0.1s ease;
     text-align: center;
-    position: absolute; /* Penting: agar bisa diposisikan di atas kanvas */
-    top: 50%; /* Posisikan di tengah vertikal */
-    left: 50%; /* Posisikan di tengah horizontal */
-    transform: translate(-50%, -50%); /* Geser agar benar-benar di tengah */
-    z-index: 10; /* Pastikan di atas canvas */
-    display: none; /* Awalnya sembunyikan, akan ditampilkan dengan JS */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    display: none;
 }
 
-/* Pastikan saat aktif terlihat */
 #startButton.active {
     display: block;
 }
