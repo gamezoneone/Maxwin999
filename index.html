@@ -511,27 +511,28 @@
             background: #E8F5E9; /* Very light green */
             border: 1px solid var(--border-color);
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 4px 8px var(--shadow-color);
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             display: block;
             border-radius: 5px;
         }
 
-        .controls {
+  .controls {
     display: grid;
     grid-template-areas:
         "left rotate right"
         ". drop .";
-    gap: 5px; /* Kurangi gap antara tombol */
+    gap: 8px; /* Kurangi gap antara tombol */
     width: 90%; /* Sesuaikan lebar relatif */
     max-width: 300px; /* Batasi lebar maksimum */
     margin: 10px auto; /* Pusatkan dan kurangi margin */
+    margin-bottom: 2px;
 }
 
 .control-btn {
    background: var(--button-primary);
     color: var(--black);
     border: 2px solid var(--game-button-border);
-    border-radius: 10px; /* Sudut membulat */
+    border-radius: 8px; /* Sudut membulat */
     padding: 8px 10px; /* Sesuaikan padding */
     font-size: 1.2em; /* Sedikit perkecil ukuran font */
     font-weight: bold;
@@ -542,6 +543,7 @@
     justify-content: center;
     align-items: center;
     min-height: 40px; /* Pastikan tinggi minimum */
+    margin-bottom: 5px;
 }
         .control-btn:hover {
             background: var(--button-secondary);
@@ -1771,7 +1773,7 @@
         }
     }
 
-    let dropInterval = 400;
+    let dropInterval = 500;
     let lastDropTime = 0;
     let animationFrameId = null;
 
