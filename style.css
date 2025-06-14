@@ -90,7 +90,7 @@
         marquee {
             width: 100%;
             padding: 0px 0;
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.9);
             color: red;
             font-size: 1em;
             text-align: center;
@@ -396,9 +396,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 3px;
-            background-color: rgba(255, 255, 255, 0.4);
-            border: 3px solid var(--border-color);
+            margin-top: 0px;
+            background-color: rgba(255, 255, 255, 0.0);
+            border: 0px solid var(--border-color);
             box-shadow: 0 8px 20px var(--shadow-color);
             border-radius: 10px;
             padding: 2px;
@@ -517,8 +517,8 @@
        
         #gameCanvas {
             background: #E8F5E9; /* Very light green */
-            border: 1px solid var(--border-color);
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 4px 8px var(--shadow-color);
+            border: 2px solid black;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.9), 0 4px 8px var(--shadow-color);
             margin-bottom: 3px;
             display: block;
             border-radius: 5px;
@@ -529,28 +529,28 @@
     grid-template-areas:
         "left rotate right"
         ". drop .";
-    gap: 8px; /* Kurangi gap antara tombol */
-    width: 90%; /* Sesuaikan lebar relatif */
+    gap: 25px; /* Kurangi gap antara tombol */
+    width: 100%; /* Sesuaikan lebar relatif */
     max-width: 300px; /* Batasi lebar maksimum */
-    margin: 10px auto; /* Pusatkan dan kurangi margin */
+    margin: 5px auto; /* Pusatkan dan kurangi margin */
     margin-bottom: 2px;
 }
 
 .control-btn {
-   background: var(--button-primary);
+   background: gold;
     color: var(--black);
-    border: 2px solid var(--game-button-border);
-    border-radius: 8px; /* Sudut membulat */
-    padding: 10px 10px; /* Sesuaikan padding */
-    font-size: 1.2em; /* Sedikit perkecil ukuran font */
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 10px 10px;
+    font-size: 1.2em;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-    display: flex; /* Gunakan flex untuk pusatkan ikon/teks di dalam tombol */
+    display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 40px; /* Pastikan tinggi minimum */
+    min-height: 40px;
     margin-bottom: 5px;
 }
         .control-btn:hover {
@@ -558,10 +558,12 @@
             transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
-        #moveLeftBtn { grid-area: left; }
-        #rotateBtn { grid-area: rotate; }
-        #moveRightBtn { grid-area: right; }
-        #softDropBtn { grid-area: drop; width: 100%; border-radius: 30px; }
+    #moveLeftBtn { grid-area: left; }
+    #rotateBtn { grid-area: rotate; }
+    #moveRightBtn { grid-area: right; }
+    #softDropBtn { grid-area: drop; 
+    width: 100%; border-radius: 20px; }
+         
 
         .message-area {
             text-align: center;
@@ -578,7 +580,7 @@
         }
         .message-area.info { background: #E3F2FD; color: #2196F3; } /* Light Blue */
         .message-area.success { background: #E8F5E9; color: #4CAF50; } /* Light Green */
-        .message-area.error { background: #FFEBEE; color: #F44336; } /* Light Red */
+        /*.message-area.error { background: #FFEBEE; color: #F44336; }*/
 
         .balance-animation.animate-gain { animation: gain-anim 0.5s ease-out; }
         .balance-animation.animate-loss { animation: loss-anim 0.5s ease-out; }
@@ -646,7 +648,7 @@
              .control-btn.drop {
               font-size: 1.4em;
               padding: 5px 80px; 
-              width: 80px; } 
+              width: 100%; } 
     }
    #startButton {
     display: block;
@@ -692,4 +694,3 @@ body{
   background-size: cover;
 	overflow:hidden;
 }
-
