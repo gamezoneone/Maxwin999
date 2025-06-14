@@ -119,7 +119,7 @@
             right: 20px;
             z-index: 10000;
             background: #222;
-            border: 3px solid gold;
+            border: 2px solid gold;
             border-radius: 50%;
             cursor: pointer;
             padding: 10px;
@@ -128,6 +128,25 @@
             gap: 6px;
             box-shadow: 0 4px 8px var(--shadow-color);
             transition: all 0.3s ease;
+            color: #ffff00; /* Kuning terang */
+            text-shadow: 0 0 10px #ffff00,
+                         0 0 20px red,
+                         0 0 30px red,
+                         0 0 40px red,
+                         0 0 50px red,
+                         0 0 60px red;
+            animation: neon-glow-yellow 1.5s ease-in-out infinite alternate;
+        } 
+     @keyframes neon-glow-yellow {
+            from {
+                text-shadow: 0 0 5px #ffff00, 0 0 10px #ffff00, 0 0 15px #ffff00;
+                color: #ffff00;
+            }
+            to {
+                text-shadow: 0 0 15px #ffff00, 0 0 25px #ffff00, 0 0 35px #ffff00,
+                             0 0 45px #ffff00, 0 0 55px #ffff00, 0 0 65px #ffff00;
+                color: red;
+            }
         }
         .hamburger-menu .bar {
             width: 30px;
@@ -678,11 +697,10 @@
     <audio id="lineClearSound" src="https://vqmfachxnjyxwuavpgds.supabase.co/storage/v1/object/public/music//mixkit-mechanical-crate-pick-up-3154%20(1).mp3" preload="auto"></audio>
     <audio id="blockLandSound" src="https://vqmfachxnjyxwuavpgds.supabase.co/storage/v1/object/public/music//mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
 
-    <button class="hamburger-menu" id="hamburgerBtn">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-    </button>
+<button class="hamburger-menu" id="hamburgerBtn">
+    Menu
+</button>
+
 
     <div class="sidebar-overlay" id="sidebarOverlay">
         <div class="sidebar-content">
@@ -1927,8 +1945,20 @@
         checkUserSession(); // This will trigger login/register modal if not logged in
         hideGameControls();
         drawBoard(); // Draw empty board on load
+       const authToken = localStorage.getItem('authToken'); // Asumsi Anda menyimpan token di localStorage
+       const isLoggedIn = !!authToken; // Cek apakah authToken ada dan tidak kosong
 
-        // Manual button clicks for audio
+       if (!isLoggedIn) {
+        // Tampilkan modal autentikasi saat halaman dimuat jika belum login
+        // Pastikan authModal adalah referensi ke elemen modal Anda
+        authModal.classList.add('active');
+        // Pastikan form login yang ditampilkan secara default
+        loginForm.style.display = 'flex';
+        registerForm.style.display = 'none';
+        authModalTitle.textContent = 'Login';
+        
+    }
+    
         document.body.addEventListener('click', () => {
             playBackgroundMusic();
         }, { once: true }); // Only attempt autoplay on first user click
