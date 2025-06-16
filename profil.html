@@ -726,7 +726,7 @@
             z-index: 1000;
             text-align: center;
             animation: none;
-            font-family: 'Press Start 2P', cursive; /* Pastikan pakai font game */
+            font-family: 'Press Start', cursive; /* Pastikan pakai font game */
         }
 
         .win-message-overlay.animate {
@@ -1001,7 +1001,7 @@
 
             <label for="dep-email">Email Pemain:</label>
             <input type="email" id="dep-email" placeholder="Email" readonly />
-           
+
             <div class="input-group-with-copy">
                 <label for="dep-nomor">Nomor Tujuan:</label>
                 <input type="text" id="dep-nomor" placeholder="Nomor" readonly />
@@ -1030,26 +1030,25 @@
     <div id="modal-withdraw" class="modal-overlay">
         <div class="modal-content">
             <h2>PENARIKAN DANA</h2>
-            <label for="with-nama">Nama Penerima:</label>
-            <input type="text" id="with-nama" placeholder="Nama Lengkap" />
+
+            <label for="with-username">Username:</label>
+            <input type="text" id="with-username" placeholder="Username Anda" readonly />
 
             <label for="with-email">Email:</label>
-            <input type="email" id="with-email" placeholder="Email" readonly />
+            <input type="email" id="with-email" placeholder="Email Anda" readonly />
 
-            <label for="with-metode">Metode Penarikan:</label>
-            <select id="with-metode">
-                <option value="">Pilih e-Wallet/Bank</option>
-                <option value="DANA">DANA</option>
-                <option value="OVO">OVO</option>
-                <option value="GoPay">GoPay</option>
-                <option value="Bank">Transfer Bank</option>
-            </select>
+            <label for="with-metode-display">Metode Pembayaran:</label>
+            <input type="text" id="with-metode-display" placeholder="Metode Anda" readonly />
+            <input type="hidden" id="with-metode-hidden" />
 
-            <label for="with-nomor">No. Rekening/e-Wallet:</label>
-            <input type="text" id="with-nomor" placeholder="Nomor Rekening/e-Wallet" />
+            <label for="with-nomor-akun-display">Nomor Akun/Rekening:</label>
+            <input type="text" id="with-nomor-akun-display" placeholder="Nomor Akun Anda" readonly />
+            <input type="hidden" id="with-nomor-akun-hidden" />
 
-            <label for="with-bank" id="label-bank" style="display:none;">Nama Bank:</label>
-            <input type="text" id="with-bank" placeholder="Contoh: BCA / Mandiri" style="display:none;" />
+            <label for="with-bank-display" id="label-bank-display" style="display:none;">Nama Bank:</label>
+            <input type="text" id="with-bank-display" placeholder="Nama Bank Anda" readonly style="display:none;" />
+            <input type="hidden" id="with-bank-hidden" />
+
 
             <label for="with-jumlah">Jumlah (Rp):</label>
             <input type="number" id="with-jumlah" placeholder="Contoh: 100000" />
@@ -1591,7 +1590,7 @@
 
         updateSaldo(pointsEarned); // Perbarui saldo pemain
         showMessage(`+Rp.${pointsEarned.toLocaleString('id-ID')} dari ${linesCleared} baris!`, 'success'); // Tampilkan pesan kemenangan
-        
+
         // Perbarui animasi kemenangan, berikan total multiplier jika ada, atau 1 jika tidak ada
         showWinAnimation(pointsEarned, hasMultiplierBeenFound ? totalMultiplierFromClearedLines : 1);
     }
@@ -2003,12 +2002,10 @@
                     document.getElementById('form-qris').style.display = 'none';
                     document.getElementById('btn-kembali-ewallet').style.display = 'none';
                 } else if (modalId === 'modal-withdraw') {
-                    document.getElementById('with-nama').value = '';
-                    document.getElementById('with-metode').value = '';
-                    document.getElementById('with-nomor').value = '';
                     document.getElementById('with-jumlah').value = '';
-                    document.getElementById('with-bank').style.display = 'none';
-                    document.getElementById('label-bank').style.display = 'none';
+                    // Sembunyikan input bank display saat menutup modal withdraw
+                    document.getElementById('with-bank-display').style.display = 'none';
+                    document.getElementById('label-bank-display').style.display = 'none';
                 }
             }
         }
@@ -2146,35 +2143,83 @@
             });
         });
 
-        // Withdraw method change listener
-        document.getElementById('with-metode').addEventListener('change', function() {
-            const selectedMethod = this.value;
-            const bankInput = document.getElementById('with-bank');
-            const bankLabel = document.getElementById('label-bank');
-            if (selectedMethod === 'Bank') {
-                bankInput.style.display = 'block';
-                bankLabel.style.display = 'block';
-                bankInput.setAttribute('required', 'true');
-            } else {
-                bankInput.style.display = 'none';
-                bankLabel.style.display = 'none';
-                bankInput.removeAttribute('required');
-                bankInput.value = '';
-            }
-        });
+        // Hapus event listener with-metode karena kita tidak lagi menggunakan select
+        // document.getElementById('with-metode').addEventListener('change', function() {
+        //     const selectedMethod = this.value;
+        //     const bankInput = document.getElementById('with-bank');
+        //     const bankLabel = document.getElementById('label-bank');
+        //     if (selectedMethod === 'Bank') {
+        //         bankInput.style.display = 'block';
+        //         bankLabel.style.display = 'block';
+        //         bankInput.setAttribute('required', 'true');
+        //     } else {
+        //         bankInput.style.display = 'none';
+        //         bankLabel.style.display = 'none';
+        //         bankInput.removeAttribute('required');
+        //         bankInput.value = '';
+        //     }
+        // });
 
-        // Withdraw button logic
+        // Withdraw button logic (MODIFIED)
         document.getElementById('btn-withdraw').onclick = async () => {
             playSound(clickSound);
             if (!uid) { showModal('alert-modal', 'Login Diperlukan', 'Anda harus login untuk melakukan penarikan.'); return; }
-            showModal('modal-withdraw');
-            const userEmail = await getCurrentUserEmail();
-            if (userEmail) {
-                const withEmailInput = document.getElementById('with-email');
-                if (withEmailInput) {
-                    withEmailInput.value = userEmail;
-                }
+            
+            // Ambil data user dari tabel users_data
+            const { data: userData, error: userError } = await supabase
+                .from('users_data')
+                .select('username, email, bank_account_data') // *** PERUBAHAN DI SINI: bank_account_info menjadi bank_account_data ***
+                .eq('user_id', uid)
+                .single();
+
+            if (userError) {
+                console.error('Error fetching user data for withdraw form:', userError.message);
+                showModal('error-modal', 'Gagal Memuat Data', 'Gagal memuat data profil Anda untuk penarikan. Pastikan data bank/e-wallet Anda sudah tersimpan.');
+                closeModal('modal-withdraw');
+                return;
             }
+
+            if (userData) {
+                document.getElementById('with-username').value = userData.username || '';
+                document.getElementById('with-email').value = userData.email || '';
+
+                // *** PERUBAHAN DI SINI: Akses properti bank_account_data ***
+                if (userData.bank_account_data) {
+                    const bankData = userData.bank_account_data; // Gunakan nama variabel yang lebih sesuai
+                    
+                    document.getElementById('with-metode-display').value = bankData.bank_name || '';
+                    document.getElementById('with-metode-hidden').value = bankData.bank_name || ''; // Simpan di hidden input
+
+                    document.getElementById('with-nomor-akun-display').value = bankData.account_number || '';
+                    document.getElementById('with-nomor-akun-hidden').value = bankData.account_number || ''; // Simpan di hidden input
+
+                    // Logika untuk menampilkan input "Nama Bank" jika metode adalah "Bank"
+                    if (bankData.bank_name && bankData.bank_name.toLowerCase() === 'bank') {
+                        document.getElementById('with-bank-display').value = bankData.actual_bank_name || ''; // Asumsikan ada properti actual_bank_name
+                        document.getElementById('with-bank-hidden').value = bankData.actual_bank_name || '';
+                        document.getElementById('with-bank-display').style.display = 'block';
+                        document.getElementById('label-bank-display').style.display = 'block';
+                    } else {
+                        document.getElementById('with-bank-display').style.display = 'none';
+                        document.getElementById('label-bank-display').style.display = 'none';
+                        document.getElementById('with-bank-display').value = ''; // Pastikan dikosongkan
+                        document.getElementById('with-bank-hidden').value = ''; // Pastikan dikosongkan
+                    }
+
+                    // Tampilkan modal setelah semua data terisi
+                    showModal('modal-withdraw');
+
+                } else {
+                    showModal('alert-modal', 'Data Rekening Belum Ada', 'Mohon lengkapi informasi rekening/e-wallet Anda di profil sebelum melakukan penarikan. Silahkan hubungi Admin jika Anda belum mengisi.');
+                    closeModal('modal-withdraw');
+                    return;
+                }
+            } else {
+                showModal('error-modal', 'Data User Tidak Ditemukan', 'Data user tidak ditemukan. Mohon coba login ulang.');
+                closeModal('modal-withdraw');
+                return;
+            }
+
             document.getElementById('with-jumlah').setAttribute('max', currentBalance);
         };
 
@@ -2182,24 +2227,20 @@
             playSound(clickSound);
             if (!uid) { showModal('alert-modal', 'Login Diperlukan', 'Anda harus login untuk melakukan penarikan.'); return; }
 
-            const nama = document.getElementById('with-nama').value.trim();
-            const emailInput = document.getElementById('with-email');
-            const email = emailInput ? emailInput.value.trim() : '';
-            const metode = document.getElementById('with-metode').value;
-            const nomor = document.getElementById('with-nomor').value.trim();
-            const bank = document.getElementById('with-bank').value.trim();
+            // Ambil nilai dari input display atau hidden yang sudah diisi otomatis
+            const nama = document.getElementById('with-username').value.trim(); // Menggunakan username sebagai nama penerima
+            const email = document.getElementById('with-email').value.trim();
+            const metode = document.getElementById('with-metode-hidden').value; // Ambil dari hidden input
+            const nomor = document.getElementById('with-nomor-akun-hidden').value.trim(); // Ambil dari hidden input
+            const bank = document.getElementById('with-bank-hidden').value.trim(); // Ambil dari hidden input, jika ada
             const jumlahInput = document.getElementById('with-jumlah').value;
             const submitButton = document.getElementById('with-submit');
 
-            if (!nama || !metode || !nomor || !jumlahInput) {
-                showModal('alert-modal', 'Peringatan', 'Lengkapi semua kolom yang wajib diisi.');
+            if (!nama || !metode || !nomor || !jumlahInput || !email) {
+                showModal('alert-modal', 'Peringatan', 'Terjadi kesalahan internal. Data profil tidak lengkap. Silakan coba lagi atau hubungi support.');
                 return;
             }
 
-            if (metode === 'Bank' && !bank) {
-                showModal('alert-modal', 'Peringatan', 'Nama Bank harus diisi untuk metode Transfer Bank.');
-                return;
-            }
             const jumlah = parseInt(jumlahInput);
             if (isNaN(jumlah) || jumlah <= 0) {
                 showModal('alert-modal', 'Peringatan', 'Jumlah penarikan harus angka positif yang valid.');
@@ -2213,16 +2254,21 @@
 
             const MIN_WITHDRAWAL_AMOUNT = 10000;
             if (jumlah < MIN_WITHDRAWAL_AMOUNT) {
-                showModal('alert-modal', 'Penarikan Minimum', `Jumlah penarikan minimal adalah Rp.${MIN_WITHDRAWAL_AMOUNT.toLocaleString('id-ID')}.`);
+                showModal('alert-modal', 'Penarikan Minimum', `Jumlah penarikan minimal adalah Rp.${MIN_WITH_WITHDRAWAL_AMOUNT.toLocaleString('id-ID')}.`);
                 return;
             }
 
             const bankAccountInfo = {
-                bank_name: (metode === 'Bank' && bank) ? bank : metode,
+                bank_name: metode, // Metode yang sudah diambil dari Supabase (DANA, OVO, GoPay, Bank)
                 account_number: nomor,
-                account_holder: nama,
+                account_holder: nama, // Username sebagai nama holder
                 email: email
             };
+
+            // Tambahkan nama bank aktual jika metodenya adalah 'Bank'
+            if (metode.toLowerCase() === 'bank' && bank) {
+                bankAccountInfo.actual_bank_name = bank;
+            }
 
             const withdrawTableBody = document.querySelector('#riwayat-penarikan-modal tbody');
             const now = new Date();
@@ -2248,6 +2294,7 @@
                 }
                 const accessToken = session.data.session.access_token;
 
+                // Memanggil Edge Function untuk memproses penarikan
                 const edgeFunctionUrl = `${SUPABASE_URL}/functions/v1/processed_withdrawal`;
 
                 const response = await fetch(edgeFunctionUrl, {
@@ -2258,7 +2305,7 @@
                     },
                     body: JSON.stringify({
                         amount: jumlah,
-                        bank_account_info: bankAccountInfo
+                        bank_account_info: bankAccountInfo // Kirim semua info bank_account_info
                     })
                 });
 
